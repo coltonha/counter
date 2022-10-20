@@ -1,4 +1,4 @@
-package gcd
+package Counter
 
 import chiseltest.ChiselScalatestTester
 import org.scalatest.freespec.AnyFreeSpec

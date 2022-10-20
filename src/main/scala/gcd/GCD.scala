@@ -32,15 +32,3 @@ class GCD extends Module {
   io.outputGCD := x
   io.outputValid := y === 0.U
 }
-
-
-class Counter extends Module {
-  val io = IO(new Bundle {
-    //val in  = Input(UInt(32.W))
-    val out = Output(UInt(32.W))
-  })
-  
-  val register = RegInit(UInt(32.W), 0.U)
-  register := register + 1.U
-  io.out := register
-}

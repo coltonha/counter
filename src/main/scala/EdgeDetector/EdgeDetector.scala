@@ -1,4 +1,4 @@
-package gcd
+package EdgeDetector
 
 import chisel3._
 

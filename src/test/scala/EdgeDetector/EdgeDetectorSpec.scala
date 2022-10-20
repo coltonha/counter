@@ -1,4 +1,4 @@
-package gcd
+package EdgeDetector
 
 import chiseltest.ChiselScalatestTester
 import org.scalatest.freespec.AnyFreeSpec
