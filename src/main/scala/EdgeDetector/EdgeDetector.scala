@@ -7,5 +7,12 @@ class EdgeDetector extends Module {
     val in = Input(Bool())
     val out = Output(Bool())
   })
-  io.out := 0.B
+  val register=Reg(Bool())
+  when (io.in =/= register) {
+    register:=true.B
+  }
+  .otherwise {
+    register:=false.B
+  }
+  io.out:=register
 }
