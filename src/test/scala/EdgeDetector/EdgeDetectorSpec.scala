@@ -6,26 +6,51 @@ import chiseltest._
 import chisel3._
 
 class EdgeDetectorSpec extends AnyFreeSpec with ChiselScalatestTester {
-  "edge detector should detect rising edges" in {
-    test(new EdgeDetector(false)).withAnnotations(Seq(VerilatorBackendAnnotation, WriteVcdAnnotation)) { c =>
-      c.io.in.poke(0.U)
-      c.clock.step(1)
-      c.io.out.expect(0.U)
-      c.io.in.poke(1.U)
-      c.clock.step(1)
-      c.io.out.expect(1.U)
-      c.clock.step(1)
-      c.io.out.expect(0.U)
 
+  "normal edge detector " in {
+    test(new EdgeDetector(1,false)).withAnnotations(Seq(VerilatorBackendAnnotation, WriteVcdAnnotation)) { c =>
       c.io.in.poke(0.U)
       c.clock.step(1)
-      c.io.out.expect(0.U)
+      c.io.in.poke(0.U)
+      c.io.out.expect(0.U)   //0->0  :0
+      
+      c.clock.step(1)
       c.io.in.poke(1.U)
+      c.io.out.expect(1.U)   //0->1 :1
+
       c.clock.step(1)
-      c.io.out.expect(1.U)
+      c.io.in.poke(1.U)
+      c.io.out.expect(0.U) //1->1 : 0
+
       c.clock.step(1)
-      c.io.out.expect(0.U)
+      c.io.in.poke(0.U)
+      c.io.out.expect(0.U)   //1->0  :0
+
+      c.clock.step(1)
+      // c.io.out.expect(0.U)
     }
   }
-  // TODO: new test case for the falling / rising edge case
+    "both edge detector " in {
+    test(new EdgeDetector(1,true)).withAnnotations(Seq(VerilatorBackendAnnotation, WriteVcdAnnotation)) { c =>
+      c.io.in.poke(0.U)
+      c.clock.step(1)
+      c.io.in.poke(0.U)
+      c.io.out.expect(0.U)   //0->0  :0
+      
+      c.clock.step(1)
+      c.io.in.poke(1.U)
+      c.io.out.expect(1.U)   //0->1 :1
+
+      c.clock.step(1)
+      c.io.in.poke(1.U)
+      c.io.out.expect(0.U) //1->1 : 0
+
+      c.clock.step(1)
+      c.io.in.poke(0.U)
+      c.io.out.expect(1.U)   //1->0  :0
+
+      c.clock.step(5)
+    }
+  }
+
 }
