@@ -20,9 +20,10 @@ class fifo(width: Int, depth: Int) extends Module {
   val rdCounter = RegInit(0.U(log2Ceil(depth).W))
   val elemCounter= RegInit(0.U(log2Ceil(depth+1).W)) //possible element number :0~depth=>depth+1
 
-  io.din_ready:= elemCounter<depth.U //not ready(fifo is full) when depth=elemcounter
-  io.dout_valid:= elemCounter> 0.U //can dequeue from fifo when # of elements are bigger than 0
-
+  // io.din_ready:= elemCounter<depth.U //not ready(fifo is full) when depth=elemcounter
+  // io.dout_valid:= elemCounter> 0.U //can dequeue from fifo when # of elements are bigger than 0
+  io.din_ready:=1.B
+  io.dout_valid:=0.B
   //circle fifo
   when (wrCounter === (depth).U) {
     wrCounter := 0.U
@@ -38,22 +39,24 @@ class fifo(width: Int, depth: Int) extends Module {
     fifo(wrCounter) := io.din
     wrCounter := wrCounter + 1.U
     //read (dequeue)
-    // io.dout := fifo(rdCounter)
     rdCounter := rdCounter + 1.U
     //elemCounter doesnt change bc it stays the same
   }.elsewhen(io.din_valid && io.din_ready) {
     fifo(wrCounter) := io.din
     wrCounter := wrCounter + 1.U
-    elemCounter := elemCounter + 1.U
+    // elemCounter := elemCounter + 1.U
+    io.din_ready:= wrCounter=/=rdCounter
+    
     //elem added, wrCounter+1
   }.elsewhen (io.dout_ready && io.dout_valid) {
-    // io.dout := fifo(rdCounter)
+    
     rdCounter := rdCounter + 1.U
-    elemCounter := elemCounter - 1.U
+    // elemCounter := elemCounter - 1.U
+    io.dout_valid:= wrCounter=/=rdCounter
     //elem removed, rdCounter+1
   }
   
-  when (elemCounter===0.U) {
-    io.dout:=0.U
-  }
+  // when (elemCounter===0.U) {
+  //   io.dout:=0.U
+  // }
 }
