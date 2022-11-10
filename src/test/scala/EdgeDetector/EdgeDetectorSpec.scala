@@ -8,7 +8,7 @@ import chisel3._
 class EdgeDetectorSpec extends AnyFreeSpec with ChiselScalatestTester {
 
   "normal edge detector " in {
-    test(new EdgeDetector(1,false)).withAnnotations(Seq( WriteVcdAnnotation)) { c =>
+    test(new EdgeDetector(1,false)).withAnnotations(Seq(/*VerilatorBackendAnnotation,*/ WriteVcdAnnotation)) { c =>
       c.io.in.poke(0.U)
       c.clock.step(1)
       c.io.in.poke(0.U)
@@ -31,7 +31,7 @@ class EdgeDetectorSpec extends AnyFreeSpec with ChiselScalatestTester {
     }
   }
     "both edge detector " in {
-    test(new EdgeDetector(1,true)).withAnnotations(Seq( WriteVcdAnnotation)) { c =>
+    test(new EdgeDetector(1,true)).withAnnotations(Seq(/*VerilatorBackendAnnotation,*/ WriteVcdAnnotation)) { c =>
       c.io.in.poke(0.U)
       c.clock.step(1)
       c.io.in.poke(0.U)
