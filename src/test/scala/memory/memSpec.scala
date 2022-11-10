@@ -7,7 +7,7 @@ import chisel3._
 
 class MemSpec extends AnyFreeSpec with ChiselScalatestTester {
     "memory of size 64KiB with 1Byte wide data" in {
-        test(new Memory(16,8)).withAnnotations(Seq(VerilatorBackendAnnotation,WriteVcdAnnotation)) { c =>
+        test(new Memory(16,8)).withAnnotations(Seq(WriteVcdAnnotation)) { c =>
 
             c.io.wrAddr.poke("hdead".U)
             c.io.wrEna.poke(1)
